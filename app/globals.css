@@ -38,6 +38,8 @@
   --sidebar-accent-foreground: oklch(0.995 0 0);
   --sidebar-border: oklch(0.92 0.01 280);
   --sidebar-ring: oklch(0.52 0.16 250);
+  --selection-bg: oklch(0.58 0.19 255);
+  --selection-text: oklch(0.99 0 0);
 }
 
 .dark {
@@ -74,6 +76,8 @@
   --sidebar-accent-foreground: oklch(0.15 0.02 280);
   --sidebar-border: oklch(0.3 0.02 280);
   --sidebar-ring: oklch(0.6 0.16 250);
+  --selection-bg: oklch(0.72 0.14 215);
+  --selection-text: oklch(0.12 0.01 260);
 }
 
 @theme inline {
@@ -258,4 +262,14 @@
 
 button {
   @apply cursor-pointer;
+}
+
+::selection {
+  background: var(--selection-bg);
+  color: var(--selection-text);
+}
+
+::-moz-selection {
+  background: var(--selection-bg);
+  color: var(--selection-text);
 }
