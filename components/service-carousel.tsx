@@ -15,21 +15,21 @@ const services: Service[] = [
   {
     id: 1,
     title: 'Sunday Service',
-    time: 'Sundays at 9:30 AM - 12:00 PM',
+    time: 'Sundays at 9:30 AM to 12:00 PM',
     description: 'Experience powerful worship through music, prayer, and biblical teaching every Sunday morning.',
     image: '/services/sunday-service.jpg',  
   },
   {
     id: 2,
     title: 'Youth Fellowship',
-    time: 'Every 2nd and 4th Sunday of the month at 2:00 PM',
+    time: 'Every 2nd and 4th Sunday of the month at 2:00 PM to 4:00 PM',
     description: 'Join us for Youth Fellowship – where young people come as they are, grow in faith together, build friendships that matter, and encounter God in fresh, relevant ways.',
     image: '/services/youth-fellowship.jpg',
   },
   {
     id: 3,
     title: 'Koinonia',
-    time: 'After every last Sunday service of the month at 12:00 PM',
+    time: 'After every last Sunday service of the month at 12:00 PM to 2:00 PM',
     description: 'Come and be part of our Koinonia — a time to gather, share meals, build meaningful relationships, and grow together in fellowship. Everyone is welcome!',
     image: '/services/koinonia.jpg',
   },
@@ -52,10 +52,12 @@ const services: Service[] = [
 export function ServiceCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isAutoPlaying, setIsAutoPlaying] = useState(true)
+  const [isDarkOverlay, setIsDarkOverlay] = useState(false)
   const [touchStart, setTouchStart] = useState(0)
   const [touchEnd, setTouchEnd] = useState(0)
   const timerRef = useRef<NodeJS.Timeout | null>(null)
   const isDraggingRef = useRef(false)
+  const imageContainerRef = useRef<HTMLDivElement>(null)
 
   // Auto-scroll logic
   useEffect(() => {
@@ -98,12 +100,40 @@ export function ServiceCarousel() {
     resetAutoPlayTimer()
   }
 
-  const handleMouseEnter = () => setIsAutoPlaying(false)
-  const handleMouseLeave = () => setIsAutoPlaying(true)
+  // Handle dark overlay - ONLY on the image area
+  const handleImageMouseEnter = () => {
+    setIsAutoPlaying(false)
+    setIsDarkOverlay(true)
+  }
+  
+  const handleImageMouseLeave = () => {
+    setIsAutoPlaying(true)
+    setIsDarkOverlay(false)
+  }
 
-  // Touch swipe handlers
+  // Handle click outside for mobile
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+      if (imageContainerRef.current && !imageContainerRef.current.contains(event.target as Node)) {
+        setIsDarkOverlay(false)
+        setIsAutoPlaying(true)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    document.addEventListener('touchstart', handleClickOutside)
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+      document.removeEventListener('touchstart', handleClickOutside)
+    }
+  }, [])
+
+  // Touch handlers for mobile
   const handleTouchStart = (e: React.TouchEvent) => {
     setTouchStart(e.targetTouches[0].clientX)
+    setIsDarkOverlay(true)
+    setIsAutoPlaying(false)
   }
 
   const handleTouchMove = (e: React.TouchEvent) => {
@@ -132,6 +162,8 @@ export function ServiceCarousel() {
     
     isDraggingRef.current = true
     setTouchStart(e.clientX)
+    setIsDarkOverlay(true)
+    setIsAutoPlaying(false)
   }
 
   const handleMouseMove = (e: React.MouseEvent) => {
@@ -139,7 +171,7 @@ export function ServiceCarousel() {
     setTouchEnd(e.clientX)
   }
 
-  const handleMouseUp = (e: React.MouseEvent) => {
+  const handleMouseUp = () => {
     if (!isDraggingRef.current) {
       isDraggingRef.current = false
       return
@@ -162,23 +194,25 @@ export function ServiceCarousel() {
   }
 
   return (
-    <div 
-      className="w-full select-none"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
-      onMouseDown={handleMouseDown}
-      onMouseMove={handleMouseMove}
-      onMouseUp={handleMouseUp}
-    >
-      <div className="relative overflow-hidden rounded-2xl">
+    <div className="w-full select-none">
+      {/* Image container with hover effect ONLY here */}
+      <div 
+        ref={imageContainerRef}
+        className="relative overflow-hidden rounded-2xl"
+        onMouseEnter={handleImageMouseEnter}
+        onMouseLeave={handleImageMouseLeave}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+      >
         <div className="relative h-[400px] sm:h-[450px] md:h-[500px]">
           {services.map((service, index) => (
             <div
               key={service.id}
-              className="absolute inset-0 transition-opacity duration-500"
+              className="absolute inset-0 transition-opacity duration-700 ease-in-out"
               style={{
                 opacity: index === currentIndex ? 1 : 0,
               }}
@@ -189,12 +223,21 @@ export function ServiceCarousel() {
                 alt={service.title}
                 className="w-full h-full object-cover"
               />
-              {/* Smooth gradient overlay from bottom (dark) to top (transparent) */}
+              
+              {/* Base gradient overlay (always present) */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+              
+              {/* Dark overlay that fades in/out with opacity */}
+              <div 
+                className={`absolute inset-0 bg-gradient-to-t from-black/95 via-black/70 to-black/50 transition-opacity duration-500 ease-in-out ${
+                  isDarkOverlay ? 'opacity-100' : 'opacity-0'
+                }`} 
+              />
             </div>
           ))}
           
-          <div className="relative z-10 w-full h-full flex flex-col justify-end text-left px-6 sm:px-12 pb-8 sm:pb-12 animate-fadeInUp">
+          {/* Text content - always visible */}
+          <div className="relative z-10 w-full h-full flex flex-col justify-end text-left px-6 sm:px-12 pb-8 sm:pb-12">
             <h3 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-2 sm:mb-3">
               {services[currentIndex].title}
             </h3>
@@ -211,10 +254,11 @@ export function ServiceCarousel() {
         </div>
       </div>
 
-      <div className="flex justify-center items-center gap-4 mt-6 animate-fadeIn">
+      {/* Navigation arrows and dots - OUTSIDE the hover area */}
+      <div className="flex justify-center items-center gap-4 mt-6">
         <button
           onClick={prevSlide}
-          className="p-2 rounded-full bg-accent text-accent-foreground hover:bg-accent/90 transition-smooth"
+          className="p-2 rounded-full bg-accent text-accent-foreground hover:bg-accent/90 active:bg-accent/80 transition-all duration-200"
           aria-label="Previous service"
         >
           <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
@@ -224,10 +268,10 @@ export function ServiceCarousel() {
           <button
             key={index}
             onClick={() => goToSlide(index)}
-            className={`h-3 rounded-full transition-smooth ${
+            className={`h-3 rounded-full transition-all duration-300 ${
               index === currentIndex
                 ? 'bg-accent w-8'
-                : 'bg-muted w-3 hover:bg-muted-foreground'
+                : 'bg-muted w-3 hover:bg-muted-foreground active:bg-muted-foreground/70'
             }`}
             aria-label={`Go to service ${index + 1}`}
           />
@@ -235,7 +279,7 @@ export function ServiceCarousel() {
 
         <button
           onClick={nextSlide}
-          className="p-2 rounded-full bg-accent text-accent-foreground hover:bg-accent/90 transition-smooth"
+          className="p-2 rounded-full bg-accent text-accent-foreground hover:bg-accent/90 active:bg-accent/80 transition-all duration-200"
           aria-label="Next service"
         >
           <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />

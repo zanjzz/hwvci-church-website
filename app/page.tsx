@@ -104,6 +104,14 @@ const branches: Branch[] = [
   },
   {
     id: 5,
+    name: 'HWVCI Calamba',
+    location: 'Philippines',
+    address: 'To be announced',
+    serviceTime: 'To be announced',
+    image: '/branches/calamba.png',
+  },
+  {
+    id: 6,
     name: 'HWVCI Mie',
     location: 'Japan',
     address: '3 Chome-2-6 Nomachinaka, Suzuka, Mie 510-0216, Japan',
@@ -111,13 +119,14 @@ const branches: Branch[] = [
     image: '/branches/mie.png',
   },
   {
-    id: 6,
+    id: 7,
     name: 'HWVCI Anjo',
     location: 'Japan',
     address: 'Ikenishi-69 Ikeuracho, Anjo, Aichi 446-0066, Japan',
     serviceTime: 'To be announced',
     image: '/branches/anjo.png',
   },
+  
 ];
 
 export function BranchesCarousel() {
@@ -561,7 +570,7 @@ export default function Home() {
       {/* Services Section */}
       <section id="services" className="py-20 px-4 sm:px-6 lg:px-8 bg-muted/30">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16 animate-on-scroll"><h2 className="text-4xl sm:text-5xl font-bold mb-4">Our Services</h2><p className="text-lg text-muted-foreground">Explore the ministries and services we offer in our main branch</p></div>
+          <div className="text-center mb-16 animate-on-scroll"><h2 className="text-4xl sm:text-5xl font-bold mb-4">Our Services</h2><p className="text-lg text-muted-foreground">Explore the ministries and services at our main branch</p></div>
           <div className="animate-on-scroll"><ServiceCarousel /></div>
         </div>
       </section>
@@ -605,7 +614,7 @@ export default function Home() {
       {/* Branches Carousel */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-muted/30">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16 animate-on-scroll"><h2 className="text-4xl sm:text-5xl font-bold mb-4">Church Branches</h2><p className="text-lg text-muted-foreground">Visit us at any of our locations</p></div>
+          <div className="text-center mb-16 animate-on-scroll"><h2 className="text-4xl sm:text-5xl font-bold mb-4">Church Branches</h2><p className="text-lg text-muted-foreground">Join us at any of our branches</p></div>
           <div className="animate-on-scroll"><BranchesCarousel /></div>
         </div>
       </section>
