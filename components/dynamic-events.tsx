@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
+import { Calendar, Clock, MapPin } from 'lucide-react'
 
 export interface Event {
   id: string
@@ -56,6 +57,25 @@ export function DynamicEvents() {
     fetchEvents()
   }, [])
 
+  // Display date with Philippines timezone
+  const formatEventDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return {
+      date: date.toLocaleDateString('en-US', {
+        weekday: 'short',
+        month: 'short',
+        day: 'numeric',
+        timeZone: 'Asia/Manila'
+      }),
+      time: date.toLocaleTimeString('en-US', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true,
+        timeZone: 'Asia/Manila'
+      })
+    }
+  }
+
   if (loading) {
     return (
       <div className="space-y-4">
@@ -86,65 +106,78 @@ export function DynamicEvents() {
 
   return (
     <div className="space-y-6">
-      {events.map((event, index) => (
-        <div
-          key={event.id}
-          className="p-6 sm:p-8 bg-card border border-border rounded-xl hover:border-accent hover:shadow-lg transition-smooth animate-fadeInUp"
-          style={{ animationDelay: `${index * 100}ms` }}
-        >
-          <div className="w-full space-y-4">
-            <div>
-              <h3 className="text-2xl font-bold text-foreground mb-3">{event.title}</h3>
-              <span
-                className={`inline-block px-4 py-2 rounded-full text-sm font-bold whitespace-nowrap ${
-                  typeColors[event.event_type]?.bg || 'bg-muted'
-                } ${typeColors[event.event_type]?.text || 'text-muted-foreground'}`}
-              >
-                {event.event_type}
-              </span>
-            </div>
-            
-            {event.description && (
-              <p className="text-muted-foreground leading-relaxed">{event.description}</p>
-            )}
-            
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-4 border-t border-border">
-              <div>
-                <p className="text-xs font-bold text-muted-foreground uppercase tracking-wide mb-2">Date & Time</p>
-                <p className="text-foreground font-semibold">
-                  {new Date(event.start_date).toLocaleDateString('en-US', {
-                    weekday: 'short',
-                    month: 'short',
-                    day: 'numeric',
-                  })}
-                </p>
-                <p className="text-foreground font-semibold">
-                  {new Date(event.start_date).toLocaleTimeString('en-US', {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  })}
-                </p>
+      {events.map((event, index) => {
+        const start = formatEventDate(event.start_date)
+        const end = formatEventDate(event.end_date)
+        return (
+          <div
+            key={event.id}
+            className="group p-6 sm:p-8 bg-card border border-border rounded-xl hover:border-accent hover:shadow-xl transition-all duration-300 animate-fadeInUp"
+            style={{ animationDelay: `${index * 100}ms` }}
+          >
+            <div className="w-full space-y-4">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <h3 className="text-2xl font-bold text-foreground">{event.title}</h3>
+                <span
+                  className={`inline-block px-4 py-2 rounded-full text-sm font-bold whitespace-nowrap ${
+                    typeColors[event.event_type]?.bg || 'bg-muted'
+                  } ${typeColors[event.event_type]?.text || 'text-muted-foreground'}`}
+                >
+                  {event.event_type}
+                </span>
               </div>
-              {event.duration_minutes && (
-                <div>
-                  <p className="text-xs font-bold text-muted-foreground uppercase tracking-wide mb-2">Duration</p>
-                  <p className="text-foreground font-semibold">
-                    {event.duration_minutes < 60
-                      ? `${event.duration_minutes} minutes`
-                      : `${Math.floor(event.duration_minutes / 60)}h ${event.duration_minutes % 60}m`}
-                  </p>
-                </div>
+              
+              {event.description && (
+                <p className="text-muted-foreground leading-relaxed">{event.description}</p>
               )}
-              {event.location && (
-                <div>
-                  <p className="text-xs font-bold text-muted-foreground uppercase tracking-wide mb-2">Location</p>
-                  <p className="text-foreground font-semibold break-words">{event.location}</p>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4 border-t border-border/50">
+                <div className="flex items-center gap-3 group/item">
+                  <div className="p-2 rounded-lg bg-accent/10 group-hover/item:bg-accent/20 transition-colors">
+                    <Calendar className="w-4 h-4 text-accent" />
+                  </div>
+                  <div>
+                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Date</p>
+                    <p className="text-foreground font-medium">{start.date}</p>
+                  </div>
                 </div>
-              )}
+                
+                <div className="flex items-center gap-3 group/item">
+                  <div className="p-2 rounded-lg bg-accent/10 group-hover/item:bg-accent/20 transition-colors">
+                    <Clock className="w-4 h-4 text-accent" />
+                  </div>
+                  <div>
+                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Start Time</p>
+                    <p className="text-foreground font-medium">{start.time}</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-center gap-3 group/item">
+                  <div className="p-2 rounded-lg bg-accent/10 group-hover/item:bg-accent/20 transition-colors">
+                    <Clock className="w-4 h-4 text-accent" />
+                  </div>
+                  <div>
+                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">End Time</p>
+                    <p className="text-foreground font-medium">{end.time}</p>
+                  </div>
+                </div>
+                
+                {event.location && (
+                  <div className="flex items-center gap-3 group/item">
+                    <div className="p-2 rounded-lg bg-accent/10 group-hover/item:bg-accent/20 transition-colors">
+                      <MapPin className="w-4 h-4 text-accent" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Location</p>
+                      <p className="text-foreground font-medium break-words">{event.location}</p>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-        </div>
-      ))}
+        )
+      })}
     </div>
   )
 }
