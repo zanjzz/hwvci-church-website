@@ -39,7 +39,7 @@ const services: Service[] = [
   {
     id: 4,
     title: "Morning Prayer",
-    time: "Everyday at 6:00 AM (Online)",
+    time: "Saturdays at 6:00 AM (Online)",
     description:
       "Join our Morning Prayer Online as we start the day together in prayer, reflection, and encouragement in God’s presence.",
     image: "/services/morning-prayer.png",
