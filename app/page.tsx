@@ -846,14 +846,14 @@ export default function Home() {
               <div className="relative aspect-square rounded-xl overflow-hidden">
                 <img
                   src="/church-images/pic1.png"
-                  alt="Church"
+                  alt="Praise and Worship"
                   className="w-full h-full object-cover gallery-img"
                 />
               </div>
               <div className="relative aspect-square rounded-xl overflow-hidden">
                 <img
                   src="/church-images/pic2.png"
-                  alt="Church"
+                  alt="Preaching"
                   className="w-full h-full object-cover gallery-img"
                 />
               </div>
@@ -862,7 +862,7 @@ export default function Home() {
             <div className="relative aspect-video rounded-xl overflow-hidden mb-3">
               <img
                 src="/church-images/pic3.png"
-                alt="Church"
+                alt="HWVCI Kids"
                 className="w-full h-full object-cover gallery-img"
               />
             </div>
@@ -871,14 +871,14 @@ export default function Home() {
               <div className="relative aspect-square rounded-xl overflow-hidden">
                 <img
                   src="/church-images/pic5.png"
-                  alt="Church"
+                  alt="Thanksgiving Day"
                   className="w-full h-full object-cover gallery-img"
                 />
               </div>
               <div className="relative aspect-square rounded-xl overflow-hidden">
                 <img
                   src="/church-images/pic4.png"
-                  alt="Church"
+                  alt="Fellowship"
                   className="w-full h-full object-cover gallery-img"
                 />
               </div>
@@ -891,7 +891,7 @@ export default function Home() {
             <div className="relative md:col-span-2 md:row-span-2 rounded-2xl overflow-hidden">
               <img
                 src="/church-images/pic1.png"
-                alt="Worship"
+                alt="Praise and Worship"
                 className="w-full h-full object-cover gallery-img"
               />
             </div>
@@ -900,7 +900,7 @@ export default function Home() {
             <div className="relative rounded-2xl overflow-hidden">
               <img
                 src="/church-images/pic2.png"
-                alt="Fellowship"
+                alt="Preaching"
                 className="w-full h-full object-cover gallery-img"
               />
             </div>
@@ -909,7 +909,7 @@ export default function Home() {
             <div className="relative rounded-2xl overflow-hidden">
               <img
                 src="/church-images/pic7.png"
-                alt="Youth"
+                alt="Preaching"
                 className="w-full h-full object-cover gallery-img"
               />
             </div>
@@ -918,7 +918,7 @@ export default function Home() {
             <div className="relative md:col-span-2 rounded-2xl overflow-hidden">
               <img
                 src="/church-images/pic3.png"
-                alt="Community"
+                alt="HWVCI Kids"
                 className="w-full h-full object-cover gallery-img"
               />
             </div>
@@ -927,7 +927,7 @@ export default function Home() {
             <div className="relative md:col-span-2 rounded-2xl overflow-hidden">
               <img
                 src="/church-images/pic4.png"
-                alt="Outreach"
+                alt="Fellowship"
                 className="w-full h-full object-cover gallery-img"
               />
             </div>
@@ -936,7 +936,7 @@ export default function Home() {
             <div className="relative rounded-2xl overflow-hidden">
               <img
                 src="/church-images/pic5.png"
-                alt="Prayer"
+                alt="Thanksgiving Day"
                 className="w-full h-full object-cover gallery-img"
               />
             </div>
@@ -945,7 +945,7 @@ export default function Home() {
             <div className="relative rounded-2xl overflow-hidden">
               <img
                 src="/church-images/pic6.png"
-                alt="Baptism"
+                alt="Lunch Fellowship"
                 className="w-full h-full object-cover gallery-img"
               />
             </div>
